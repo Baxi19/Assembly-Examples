@@ -1,0 +1,75 @@
+;------------------------------------------------------------------------------
+; 
+; Tema: Biblioteca de macros.
+;
+;------------------------------------------------------------------------------
+
+
+;Macro de impresion de una cadena
+
+imprime macro messg		;cadena a imprimir
+        push ax
+	push dx
+	mov ah,09
+        lea dx, messg
+        int 21h
+	pop dx
+	pop ax
+endm
+
+;Macro para finalzar el programa
+;macro para leer cadena
+LEE     MACRO arg1
+                push ax
+                push dx
+                lea dx,arg1
+                mov ah,10
+                int 21h
+                pop dx
+                pop ax
+        ENDM
+
+LEE_CARACTER MACRO
+	mov  ah,01h
+   	int  21h
+	ENDM
+
+fin macro 
+	mov ax,4c00h
+	int 21h
+	endm
+
+LIMPIAR MACRO COL
+        mov ax,0600h   ;toda la pantalla
+        mov bh,COL     ;Fondo blanco, frente negro
+        mov cx,0000h   ;desde fila 00, columna 00
+        mov dx,184fh   ;hasta fila 25(18h), columna 80(4Fh)
+        int 10h
+        ENDM
+
+;02H Establece la posicion del cursor                           
+        ;BH -> Numero de Pagina
+        ;DH -> Fila (Renglon)
+        ;DL -> Columna    					
+        GOTOXY  MACRO x,y
+		push bx
+		push dx
+		push ax
+             xor bh,bh
+             mov dl,x
+             mov dh,y     
+             mov ah,02h
+             int 10h
+		pop ax
+		pop dx
+		pop bx
+        ENDM
+
+COLORES MACRO COL
+	 mov ax,0600h
+         mov bh,COL
+         xor cx,cx
+         mov dx,184fh
+         int 10h
+ENDM
+;Ing Diego Rojas Vega - 2015
